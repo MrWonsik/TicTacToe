@@ -23,25 +23,127 @@ public class Game {
         return playerSign;
     }
 
+
     public void cpuTurn(){
 
-        int cpuPositionX = 1;
-        int cpuPositionY = 1;
-        while(gameBoard.getGameBoardFields()[cpuPositionX][cpuPositionY].isFill()){
-            Random generator = new Random();
-            cpuPositionX = generator.nextInt(3);
-            cpuPositionY = generator.nextInt(3);
-            //findBestPosition(cpuPositionX, cpuPositionY);
+        Random generator = new Random();
+        Point cpuPoint = new Point(1,1);
+
+        while(gameBoard.getGameBoardFields()[cpuPoint.getX()][cpuPoint.getY()].isFill()) {
+            cpuPoint.setX(generator.nextInt(3));
+            cpuPoint.setY(generator.nextInt(3));
+            setCpuPoint(playerSign.getValue(), cpuPoint);
+            setCpuPoint(cpuSign.getValue(), cpuPoint);
         }
 
-        setSignInBoard(cpuPositionX, cpuPositionY, cpuSign);
+        setSignInBoard(cpuPoint.getX(), cpuPoint.getY(), cpuSign);
     }
-
-    private void findBestPosition(int positionX, int positionY)
+    
+    public void setCpuPoint(int signValue, Point toReturn)
     {
-        Random generator = new Random();
-        positionX = generator.nextInt(3);
-        positionY = generator.nextInt(3);
+
+        for(int i=0; i < GameBoard.SIZE_OF_BOARD ; i++)
+        {
+            if(gameBoard.getGameBoardFields()[i][1].getSign().getValue() == signValue
+                    && gameBoard.getGameBoardFields()[i][0].getSign().getValue() == signValue
+                    && !gameBoard.getGameBoardFields()[i][2].isFill())
+            {
+                toReturn.setX(i);
+                toReturn.setY(2);
+            }
+
+            if(gameBoard.getGameBoardFields()[i][2].getSign().getValue() == signValue
+                    && gameBoard.getGameBoardFields()[i][0].getSign().getValue() == signValue
+                    && !gameBoard.getGameBoardFields()[i][1].isFill())
+            {
+                toReturn.setX(i);
+                toReturn.setY(1);
+            }
+
+            if(gameBoard.getGameBoardFields()[i][2].getSign().getValue() == signValue
+                    && gameBoard.getGameBoardFields()[i][1].getSign().getValue() == signValue
+                    && !gameBoard.getGameBoardFields()[i][0].isFill())
+            {
+                toReturn.setX(1);
+                toReturn.setY(0);
+            }
+        }
+
+        for(int i=0; i < GameBoard.SIZE_OF_BOARD ; i++)
+        {
+            if(gameBoard.getGameBoardFields()[1][i].getSign().getValue() == playerSign.getValue()
+                    && gameBoard.getGameBoardFields()[0][i].getSign().getValue() == playerSign.getValue()
+                    && !gameBoard.getGameBoardFields()[2][i].isFill())
+            {
+                toReturn.setX(2);
+                toReturn.setY(i);
+            }
+
+            if(gameBoard.getGameBoardFields()[2][i].getSign().getValue() == playerSign.getValue()
+                    && gameBoard.getGameBoardFields()[0][i].getSign().getValue() == playerSign.getValue()
+                    && !gameBoard.getGameBoardFields()[1][i].isFill())
+            {
+                toReturn.setX(1);
+                toReturn.setY(i);
+            }
+
+            if(gameBoard.getGameBoardFields()[2][i].getSign().getValue() == playerSign.getValue()
+                    && gameBoard.getGameBoardFields()[1][i].getSign().getValue() == playerSign.getValue()
+                    && !gameBoard.getGameBoardFields()[0][i].isFill())
+            {
+                toReturn.setX(0);
+                toReturn.setY(i);
+            }
+        }
+
+        if(gameBoard.getGameBoardFields()[0][0].getSign().getValue() == signValue
+                && gameBoard.getGameBoardFields()[1][1].getSign().getValue() == signValue
+                && !gameBoard.getGameBoardFields()[2][2].isFill())
+        {
+            toReturn.setX(2);
+            toReturn.setY(2);
+        }
+
+        if(gameBoard.getGameBoardFields()[0][0].getSign().getValue() == signValue
+                && gameBoard.getGameBoardFields()[2][2].getSign().getValue() == signValue
+                && !gameBoard.getGameBoardFields()[1][1].isFill())
+        {
+            toReturn.setX(1);
+            toReturn.setY(1);
+        }
+
+        if(gameBoard.getGameBoardFields()[1][1].getSign().getValue() == signValue
+                && gameBoard.getGameBoardFields()[2][2].getSign().getValue() == signValue
+                && !gameBoard.getGameBoardFields()[0][0].isFill())
+        {
+            toReturn.setX(0);
+            toReturn.setY(0);
+        }
+
+
+        if(gameBoard.getGameBoardFields()[2][0].getSign().getValue() == signValue
+                && gameBoard.getGameBoardFields()[1][1].getSign().getValue() == signValue
+                && !gameBoard.getGameBoardFields()[0][2].isFill())
+        {
+            toReturn.setX(0);
+            toReturn.setY(2);
+        }
+
+        if(gameBoard.getGameBoardFields()[2][0].getSign().getValue() == signValue
+                && gameBoard.getGameBoardFields()[0][2].getSign().getValue() == signValue
+                && !gameBoard.getGameBoardFields()[1][1].isFill())
+        {
+            toReturn.setX(1);
+            toReturn.setY(1);
+        }
+
+        if(gameBoard.getGameBoardFields()[0][2].getSign().getValue() == signValue
+                && gameBoard.getGameBoardFields()[1][1].getSign().getValue() == signValue
+                && !gameBoard.getGameBoardFields()[2][0].isFill())
+        {
+            toReturn.setX(2);
+            toReturn.setY(0);
+        }
     }
 
     public GameBoard getGameBoard() {
@@ -90,6 +192,24 @@ public class Game {
             }
 
             return false;
+        }
+    }
+
+    public void queue(int playerX, int playerY)
+    {
+        if(playerSign.getValue() == 1)
+        {
+            setSignInBoard(playerX, playerY, playerSign);
+            cpuTurn();
+            getGameBoard().showGameBoard();
+            System.out.println();
+        }
+        else
+        {
+            cpuTurn();
+            setSignInBoard(playerX, playerY, playerSign);
+            getGameBoard().showGameBoard();
+            System.out.println();
         }
     }
 }

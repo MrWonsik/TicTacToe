@@ -1,6 +1,6 @@
 package model;
 
-public class GameBoard {
+public class GameBoard implements Cloneable{
     final static int SIZE_OF_BOARD = 3;
     GameBoardField[][] gameBoardFields;
 
@@ -11,6 +11,11 @@ public class GameBoard {
                 gameBoardFields[x][y] = new GameBoardField();
             }
         }
+    }
+
+    GameBoard(GameBoard other)
+    {
+        this.gameBoardFields = other.gameBoardFields;
     }
 
     public GameBoardField[][] getGameBoardFields() {
@@ -38,4 +43,5 @@ public class GameBoard {
 
         return true;
     }
+
 }
