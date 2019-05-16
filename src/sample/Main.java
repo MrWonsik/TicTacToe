@@ -25,8 +25,12 @@ public class Main extends Application {
         newGame.getGameBoard().showGameBoard();
         Scanner scaner = new Scanner(System.in);
         while(!newGame.isEnd()) {
+            System.out.println("Podaj X: ");
+            int X = scaner.nextInt();
+            System.out.println("Podaj Y: ");
+            int Y = scaner.nextInt();
             System.out.println();
-            //newGame.setSignInBoard(X, Y, newGame.getPlayerSign());
+            newGame.setSignInBoard(X, Y, newGame.getPlayerSign());
             newGame.cpuTurn();
             newGame.getGameBoard().showGameBoard();
         }
